@@ -132,3 +132,37 @@ This register holds the last measured temperature of the device, in sixteen-bit 
 ### 0x51: power supply value
 
 This register holds the last measured supply voltage of the device, in sixteen-bit signed integer millivolts. Voltage measurement frequency is not defined, but is guaranteed to be at least 1 Hz (and may be significantly higher, and not fixed). See the Atmel ATXMEGA8E5 datasheet for accuracy specifications for measurement of Vcc/10 vs the internal bandgap reference.
+
+## Pinout
+
+                        +----------+
+            V+      ----| 17     6 |---- ROW0 / ADDR0   (PA0)
+            V+      ----| 32     5 |---- ROW1 / ADDR1   (PA1)
+                        |        4 |---- ROW2 / ADDR2   (PA2)
+                        |        3 |---- ROW3 / ADDR3   (PA3)
+                        |        2 |---- ROW4 / ADDR4   (PA4)
+                        |       31 |---- ROW5 / ADDR5   (PA5)
+            PDI_D   ----|  7    30 |---- ROW6 / ADDR6   (PA6)
+     NRST / PDI_C   ----|  8    29 |---- ROW7           (PA7)
+                        |          |
+                        |       14 |---- COL0           (PC2)
+                        |       13 |---- COL1           (PC3)
+    (PC0)   SDA     ----| 16    12 |---- COL2           (PC4)
+    (PC1)   SCL     ----| 15    11 |---- COL3           (PC5)
+                        |       10 |---- COL4           (PC6)
+                        |        9 |---- COL5           (PC7)
+                        |       28 |---- COL6           (PD0)
+                        |       27 |---- COL7           (PD1)
+                        |       26 |---- COL8           (PD2)
+                        |       25 |---- COL9           (PD3)
+                        |       24 |---- COL10          (PD4)
+                        |       23 |---- COL11          (PD5)
+                        |       22 |---- COL12          (PD6)
+                        |       21 |---- COL13          (PD7)
+            GND     ----|  1    20 |---- COL14          (PR0)
+            GND     ----| 18    19 |---- COL15          (PR1)
+                        +----------+
+
+The combined `ROWn / ADDRn` pins set the address through pullup resistors, which should have a nominal value between 10k and 200k. Bits with pullup are 1, bits without pullup are 0. With no pullups, the default address is as mentioned above (as 0x00 is a reserved address).
+
+For a preprogrammed chip (which I currently have no plans to offer, but hey, you never know...), pins `PDI_D` and `PDI_C` may be left disconnected. If `PDI_C` is to be used for its alternative function as a reset pin, a stronger external pullup (around 10k) should be added unless the trace connected to this pin is short.
